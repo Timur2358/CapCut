@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Звук та музика | Audio Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #2c7a7b;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInScale 0.8s ease;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .page-header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+        }
+
+        .audio-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.6s ease backwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .audio-section:nth-child(2) { animation-delay: 0.1s; }
+        .audio-section:nth-child(3) { animation-delay: 0.2s; }
+        .audio-section:nth-child(4) { animation-delay: 0.3s; }
+
+        .audio-section h2 {
+            font-size: 2.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-icon {
+            font-size: 3rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .audio-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            border-radius: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .audio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .audio-card:hover::before {
+            left: 100%;
+        }
+
+        .audio-card:hover {
+            transform: translateY(-8px);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .audio-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4df7ff;
+        }
+
+        .audio-card p {
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        .music-library {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.15));
+            border-left: 5px solid #ffa500;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .music-library h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .genre-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .tag:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .feature-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px) rotate(2deg);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-box span {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 1rem;
+            animation: wobble 3s ease-in-out infinite;
+        }
+
+        @keyframes wobble {
+            0%, 100% {
+                transform: rotate(-3deg);
+            }
+            50% {
+                transform: rotate(3deg);
+            }
+        }
+
+        .feature-box h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .tip-section {
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.3), rgba(103, 58, 183, 0.3));
+            border-left: 5px solid #9c27b0;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2.5rem 0;
+        }
+
+        .tip-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .tip-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .tip-list li {
+            padding: 1rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        .tip-list li::before {
+            content: '🎵';
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+        }
+
+        .voice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .voice-card {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .voice-card:hover {
+            background: rgba(0, 0, 0, 0.35);
+            transform: scale(1.08);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .voice-card span {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+
+        .equalizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 8px;
+            height: 80px;
+            margin: 2rem 0;
+        }
+
+        .bar {
+            width: 12px;
+            background: linear-gradient(to top, #4df7ff, #00f2fe);
+            border-radius: 6px;
+            animation: equalize 1s ease-in-out infinite;
+        }
+
+        .bar:nth-child(1) { animation-delay: 0s; height: 30%; }
+        .bar:nth-child(2) { animation-delay: 0.1s; height: 60%; }
+        .bar:nth-child(3) { animation-delay: 0.2s; height: 80%; }
+        .bar:nth-child(4) { animation-delay: 0.3s; height: 50%; }
+        .bar:nth-child(5) { animation-delay: 0.4s; height: 70%; }
+        .bar:nth-child(6) { animation-delay: 0.5s; height: 40%; }
+
+        @keyframes equalize {
+            0%, 100% {
+                height: 30%;
+            }
+            50% {
+                height: 100%;
+            }
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .audio-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .audio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .genre-tags {
+                justify-content: center;
+            }
+
+            .voice-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">🏠 Головна</a></li>
+            <li><a href="fundamentals.html">📚 Основи</a></li>
+            <li><a href="visual-magic.html">✨ Візуальні ефекти</a></li>
+            <li><a href="audio-design.html">🎵 Звук та музика</a></li>
+            <li><a href="mastery-tools.html">🔧 Профі-фішки</a></li>
+            <li><a href="export-guide.html">📤 Вивід відео</a></li>
+            <li><a href="portfolio.html">🎬 Мої роботи</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>🎵 Звук та музика</h1>
+            <p>50% вашого відео — це звук. Навчіться робити його бездоганним!</p>
+        </div>
+
+        <!-- Header Image -->
+        <div style="margin-bottom: 3rem; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);">
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1200&q=80" alt="Аудіо обладнання" style="width: 100%; height: auto; display: block;">
+        </div>
+
+        <div class="equalizer">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
+        <div class="audio-section">
+            <h2><span class="section-icon">🎼</span> Робота з треками</h2>
+            <p>CapCut пропонує величезну бібліотеку безкоштовної музики без авторських прав. Використовуйте без обмежень!</p>
+
+            <div class="music-library">
+                <h3>🎹 Музична бібліотека</h3>
+                <p>Понад 10,000 треків різних жанрів — від хіп-хопу до класики. Всі треки повністю ліцензовані для комерційного використання.</p>
+                
+                <div class="genre-tags">
+                    <span class="tag">🎸 Рок</span>
+                    <span class="tag">🎹 Електроніка</span>
+                    <span class="tag">🎺 Джаз</span>
+                    <span class="tag">🎤 Хіп-хоп</span>
+                    <span class="tag">🎻 Класика</span>
+                    <span class="tag">🌴 Chill</span>
+                    <span class="tag">⚡ EDM</span>
+                    <span class="tag">🎵 Поп</span>
+                </div>
+            </div>
+
+            <div class="audio-grid">
+                <div class="audio-card">
+                    <h3>Додавання музики</h3>
+                    <p>Натисніть "Audio" → "Music" → оберіть з бібліотеки або завантажте свій файл. Підтримка MP3, WAV, AAC.</p>
+                </div>
+
+                <div class="audio-card">
+                    <h3>Синхронізація з відео</h3>
+                    <p>Функція "Beat Detection" автоматично визначає ритм музики та пропонує точки для монтажу.</p>
+                </div>
+
+                <div class="audio-card">
+                    <h3>Регулювання гучності</h3>
+                    <p>Плавні fade in/out, ducking (приглушення фонової музики під голос), та точне налаштування рівнів.</p>
+                </div>
+
+                <div class="audio-card">
+                    <h3>Багатодоріжкове аудіо</h3>
+                    <p>Накладайте до 10 аудіодоріжок одночасно — музика, голос, SFX на різних рівнях.</p>
+                </div>
+            </div>
+
+            <!-- Audio Images -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+                    <img src="https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?w=500&q=80" alt="Мікрофон" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                </div>
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+                    <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=500&q=80" alt="Аудіо редагування" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                </div>
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+                    <img src="https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=500&q=80" alt="Звукові хвилі" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                </div>
+            </div>
+        </div>
+
+        <div class="audio-section">
+            <h2><span class="section-icon">🔊</span> Звукові ефекти (SFX)</h2>
+            <p>Додайте реалізму та емоцій за допомогою звукових ефектів.</p>
+
+            <div class="feature-showcase">
+                <div class="feature-box">
+                    <span>💥</span>
+                    <h3>Impact</h3>
+                    <p>Удари, вибухи</p>
+                </div>
+
+                <div class="feature-box">
+                    <span>🌊</span>
+                    <h3>Nature</h3>
+                    <p>Природа, погода</p>
+                </div>
+
+                <div class="feature-box">
+                    <span>🚗</span>
+                    <h3>Transport</h3>
+                    <p>Транспорт, машини</p>
+                </div>
+
+                <div class="feature-box">
+                    <span>👥</span>
+                    <h3>Human</h3>
+                    <p>Люди, емоції</p>
+                </div>
+
+                <div class="feature-box">
+                    <span>🎮</span>
+                    <h3>Gaming</h3>
+                    <p>Геймінг звуки</p>
+                </div>
+
+                <div class="feature-box">
+                    <span>📱</span>
+                    <h3>Interface</h3>
+                    <p>UI звуки</p>
+                </div>
+            </div>
+
+            <div class="tip-section">
+                <h3>💡 Професійні поради</h3>
+                <ul class="tip-list">
+                    <li><strong>Синхронізація з діями:</strong> Додавайте SFX точно в момент дії на екрані для максимального ефекту.</li>
+                    <li><strong>Не перебарщуйте:</strong> Один-два добре підібраних звуки краще, ніж десяток випадкових.</li>
+                    <li><strong>Баланс гучності:</strong> SFX не повинні заглушати музику чи голос — налаштуйте рівні правильно.</li>
+                    <li><strong>Layering:</strong> Накладайте кілька схожих звуків для створення унікального ефекту.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="audio-section">
+            <h2><span class="section-icon">🗣️</span> Text-to-Speech (TTS)</h2>
+            <p>AI-озвучка для ваших відео — природні голоси, багато мов, емоційна інтонація!</p>
+
+            <div class="voice-grid">
+                <div class="voice-card">
+                    <span>👨</span>
+                    <h3>Чоловічий</h3>
+                    <p>Глибокий, впевнений</p>
+                </div>
+
+                <div class="voice-card">
+                    <span>👩</span>
+                    <h3>Жіночий</h3>
+                    <p>М'який, приємний</p>
+                </div>
+
+                <div class="voice-card">
+                    <span>👦</span>
+                    <h3>Молодіжний</h3>
+                    <p>Енергійний, сучасний</p>
+                </div>
+
+                <div class="voice-card">
+                    <span>🤖</span>
+                    <h3>Роботичний</h3>
+                    <p>Футуристичний</p>
+                </div>
+
+                <div class="voice-card">
+                    <span>🎭</span>
+                    <h3>Драматичний</h3>
+                    <p>Емоційний, виразний</p>
+                </div>
+
+                <div class="voice-card">
+                    <span>😊</span>
+                    <h3>Веселий</h3>
+                    <p>Позитивний, жартівливий</p>
+                </div>
+            </div>
+
+            <div class="music-library" style="background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(21, 101, 192, 0.2)); border-left-color: #2196f3;">
+                <h3>🌍 Підтримка мов</h3>
+                <p>CapCut TTS підтримує понад 50 мов, включаючи українську, англійську, іспанську, китайську, японську та багато інших. Налаштуйте швидкість та тональність голосу під ваш контент!</p>
+            </div>
+
+            <div class="audio-grid">
+                <div class="audio-card">
+                    <h3>Як використовувати</h3>
+                    <p>Текст → Text-to-Speech → Оберіть голос → Налаштуйте швидкість → Застосувати. Готово!</p>
+                </div>
+
+                <div class="audio-card">
+                    <h3>Налаштування емоцій</h3>
+                    <p>Змінюйте інтонацію: радість, сум, гнів, здивування. AI адаптується до контексту.</p>
+                </div>
+
+                <div class="audio-card">
+                    <h3>Ідеально для</h3>
+                    <p>Інструкції, туторіали, мемі, озвучка сторіс, освітній контент, анімація.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tip-section">
+            <h3>🎓 Майстер-клас з аудіо</h3>
+            <p><strong>Правило "трьох рівнів":</strong></p>
+            <ul class="tip-list">
+                <li><strong>Музика (фон):</strong> -12 до -18 дБ — створює атмосферу, не відвертає увагу</li>
+                <li><strong>Голос (основний):</strong> -3 до -6 дБ — головний контент, чітко чути</li>
+                <li><strong>SFX (акценти):</strong> -6 до -12 дБ — підкреслює моменти, не заглушає</li>
+            </ul>
+            <p style="margin-top: 1rem;"><strong>Завжди тестуйте</strong> ваш аудіомікс на різних пристроях — навушниках, динаміках телефону, комп'ютерних колонках!</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="visual-magic.html" class="nav-button">← Візуальні ефекти</a>
+            <a href="mastery-tools.html" class="nav-button">Профі-фішки →</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Основи CapCut | Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #34495e;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: slideIn 0.6s ease backwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        .section:nth-child(5) { animation-delay: 0.4s; }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #3498db;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-card p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .info-box {
+            background: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .info-box h3 {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tip-box {
+            background: rgba(76, 175, 80, 0.2);
+            border-left: 4px solid #4caf50;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .tip-box h3 {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.8rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .interface-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .interface-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .interface-item:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .interface-item span {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 2rem 1.5rem;
+            }
+
+            .step-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">🏠 Головна</a></li>
+            <li><a href="fundamentals.html">📚 Основи</a></li>
+            <li><a href="visual-magic.html">✨ Візуальні ефекти</a></li>
+            <li><a href="audio-design.html">🎵 Звук та музика</a></li>
+            <li><a href="mastery-tools.html">🔧 Профі-фішки</a></li>
+            <li><a href="export-guide.html">📤 Вивід відео</a></li>
+            <li><a href="portfolio.html">🎬 Мої роботи</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📚 Основи CapCut</h1>
+            <p>Перші кроки у світі відеомонтажу — від встановлення до першого відео</p>
+        </div>
+
+        <!-- Header Image -->
+                <div class="section">
+            <h2><span class="section-icon">📥</span> Встановлення CapCut</h2>
+            <p>CapCut доступний на різних платформах. Оберіть ту, що підходить вам:</p>
+            
+            <div class="step-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Android</h3>
+                    <p>Завантажте з Google Play Store. Пошукайте "CapCut" та натисніть "Встановити". Розмір: ~200 МБ.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>iOS</h3>
+                    <p>Знайдіть у App Store. Безкоштовно для iPhone та iPad. Підтримка iOS 11+.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Windows/Mac</h3>
+                    <p>Десктопна версія з розширеними можливостями. Завантажте з офіційного сайту capcut.com.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Веб-версія</h3>
+                    <p>Працюйте прямо в браузері без встановлення. Ідеально для швидкого монтажу.</p>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <h3>💡 Порада</h3>
+                <p>Для серйозних проєктів рекомендуємо десктопну версію — більше RAM, більше можливостей!</p>
+            </div>
+
+            <!-- Installation Image -->
+            <div style="margin-top: 2rem; border-radius: 15px; overflow: hidden; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80" alt="Різні пристрої для роботи" style="width: 100%; height: auto; display: block;">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="section-icon">🖥️</span> Інтерфейс програми</h2>
+            <p>Розберемо основні елементи робочого простору CapCut:</p>
+
+            <div class="interface-grid">
+                <div class="interface-item">
+                    <span>📁</span>
+                    <h3>Медіатека</h3>
+                    <p>Ваші відео, фото та аудіо</p>
+                </div>
+
+                <div class="interface-item">
+                    <span>📺</span>
+                    <h3>Превʼю</h3>
+                    <p>Попередній перегляд</p>
+                </div>
+
+                <div class="interface-item">
+                    <span>⏱️</span>
+                    <h3>Таймлайн</h3>
+                    <p>Шкала часу та доріжки</p>
+                </div>
+
+                <div class="interface-item">
+                    <span>🎨</span>
+                    <h3>Інструменти</h3>
+                    <p>Ефекти та редагування</p>
+                </div>
+
+                <div class="interface-item">
+                    <span>⚙️</span>
+                    <h3>Налаштування</h3>
+                    <p>Параметри проєкту</p>
+                </div>
+
+                <div class="interface-item">
+                    <span>💾</span>
+                    <h3>Експорт</h3>
+                    <p>Збереження відео</p>
+                </div>
+            </div>
+
+            <!-- Interface Images -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+                    <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=500&q=80" alt="Інтерфейс редактора" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                </div>
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+                    <img src="https://images.unsplash.com/photo-1614113489855-66422ad300a4?w=500&q=80" alt="Таймлайн" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                </div>
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+                    <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=500&q=80" alt="Ефекти" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>ℹ️ Корисно знати</h3>
+                <p>Інтерфейс можна налаштувати під себе — перетягуйте панелі та змінюйте розмір вікон для зручності.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="section-icon">📤</span> Імпорт відео</h2>
+            <p>Кілька способів додати медіафайли до проєкту:</p>
+
+            <ul class="feature-list">
+                <li><strong>Перетягування:</strong> Просто перетягніть файли з провідника у вікно програми</li>
+                <li><strong>Кнопка "Імпорт":</strong> Натисніть на кнопку та оберіть потрібні файли</li>
+                <li><strong>З галереї:</strong> На мобільних пристроях — прямий доступ до камери та галереї</li>
+                <li><strong>З хмари:</strong> Синхронізуйте файли з Google Drive або iCloud</li>
+                <li><strong>Запис екрану:</strong> Записуйте відео прямо у CapCut</li>
+            </ul>
+
+            <div class="tip-box">
+                <h3>💡 Підтримувані формати</h3>
+                <p>MP4, MOV, AVI, MKV, WEBM, JPG, PNG, GIF, MP3, WAV, AAC — CapCut підтримує всі популярні формати!</p>
+            </div>
+
+            <!-- Import Image -->
+            <div style="margin-top: 2rem; border-radius: 15px; overflow: hidden; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);">
+                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&q=80" alt="Медіафайли та відео" style="width: 100%; height: auto; display: block;">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="section-icon">✂️</span> Базове нарізання</h2>
+            <p>Основи редагування відео — найважливіші навички монтажера:</p>
+
+            <div class="step-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Розділити (Split)</h3>
+                    <p>Поставте курсор на потрібне місце та натисніть "Split". Кліп розділиться на дві частини.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Обрізати (Trim)</h3>
+                    <p>Тягніть за краї кліпу, щоб обрізати початок або кінець. Швидко та інтуїтивно!</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Видалити (Delete)</h3>
+                    <p>Виділіть фрагмент і натисніть Del або іконку кошика. Прогалини закриються автоматично.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Перемістити</h3>
+                    <p>Перетягуйте кліпи по таймлайну для зміни послідовності. Працює як конструктор!</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <h3>Дублювати</h3>
+                    <p>Копіюйте улюблені моменти одним кліком. Ідеально для повторюваних елементів.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">6</div>
+                    <h3>Масштабування</h3>
+                    <p>Збільшуйте або зменшуйте відео, додавайте панорамування для динаміки.</p>
+                </div>
+            </div>
+
+            <!-- Editing Image -->
+            <div style="margin-top: 2rem; border-radius: 15px; overflow: hidden; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);">
+                <img src="https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=1200&q=80" alt="Процес відеомонтажу" style="width: 100%; height: auto; display: block;">
+            </div>
+
+            <div class="info-box">
+                <h3>⌨️ Гарячі клавіші</h3>
+                <p><strong>Space</strong> — пауза/відтворення | <strong>Ctrl+Z</strong> — скасувати | <strong>S</strong> — розділити | <strong>Del</strong> — видалити</p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-button">← Назад до головної</a>
+            <a href="visual-magic.html" class="nav-button">Візуальні ефекти →</a>
+        </div>
+    </div>
+</body>
+</html>

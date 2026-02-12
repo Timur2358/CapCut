@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вивід відео | Export Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #5a67d8;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 4px 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .page-header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+        }
+
+        .export-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: scaleIn 0.6s ease backwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .export-section:nth-child(2) { animation-delay: 0.1s; }
+        .export-section:nth-child(3) { animation-delay: 0.2s; }
+        .export-section:nth-child(4) { animation-delay: 0.3s; }
+
+        .section-title {
+            font-size: 2.3rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .title-icon {
+            font-size: 3rem;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .format-card {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .format-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .format-card:hover::before {
+            left: 100%;
+        }
+
+        .format-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(0, 0, 0, 0.35);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .format-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .format-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #ffd700;
+        }
+
+        .format-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .specs-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .specs-list li {
+            padding: 0.8rem 0;
+            padding-left: 2rem;
+            position: relative;
+            line-height: 1.6;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .specs-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #4df7ff;
+            font-size: 1.3rem;
+        }
+
+        .quality-comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .quality-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quality-box:hover {
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .quality-box h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4df7ff;
+        }
+
+        .quality-box .resolution {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .social-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-card:hover {
+            transform: translateY(-15px) rotate(3deg);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .social-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .social-card:hover .social-icon {
+            animation: spin 0.6s ease;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .social-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .recommended-settings {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.25), rgba(21, 101, 192, 0.25));
+            border-left: 5px solid #2196f3;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .recommended-settings h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: #4df7ff;
+        }
+
+        .pro-tip {
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.3), rgba(103, 58, 183, 0.3));
+            border-left: 5px solid #9c27b0;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2.5rem 0;
+        }
+
+        .pro-tip h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .bitrate-guide {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .bitrate-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.8rem;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .bitrate-box h4 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #ffd700;
+        }
+
+        .export-button {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: #fff;
+            padding: 1.5rem 3rem;
+            border-radius: 35px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+        }
+
+        .export-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.6);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .export-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .format-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quality-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .bitrate-guide {
+                grid-template-columns: 1fr;
+            }
+
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">🏠 Головна</a></li>
+            <li><a href="fundamentals.html">📚 Основи</a></li>
+            <li><a href="visual-magic.html">✨ Візуальні ефекти</a></li>
+            <li><a href="audio-design.html">🎵 Звук та музика</a></li>
+            <li><a href="mastery-tools.html">🔧 Профі-фішки</a></li>
+            <li><a href="export-guide.html">📤 Вивід відео</a></li>
+            <li><a href="portfolio.html">🎬 Мої роботи</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📤 Експорт та публікація</h1>
+            <p>Фінальний крок — виведіть ваш шедевр у світ правильно!</p>
+        </div>
+
+        <!-- Header Image -->
+        <div style="margin-bottom: 3rem; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);">
+            <img src="https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=1200&q=80" alt="Експорт відео" style="width: 100%; height: auto; display: block;">
+        </div>
+
+        <div class="export-section">
+            <h2 class="section-title">
+                <span class="title-icon">🎬</span>
+                Формати та роздільна здатність
+            </h2>
+            <p>Оберіть правильний формат для вашої платформи та аудиторії. Від цього залежить якість та розмір файлу.</p>
+
+            <div class="quality-comparison">
+                <div class="quality-box">
+                    <h4>720p HD</h4>
+                    <div class="resolution">1280×720</div>
+                    <p>Базова якість для швидкої публікації</p>
+                </div>
+
+                <div class="quality-box" style="border-color: #4caf50; background: rgba(76, 175, 80, 0.15);">
+                    <h4>1080p Full HD</h4>
+                    <div class="resolution">1920×1080</div>
+                    <p>⭐ Найпопулярніший вибір</p>
+                </div>
+
+                <div class="quality-box">
+                    <h4>4K Ultra HD</h4>
+                    <div class="resolution">3840×2160</div>
+                    <p>Максимальна якість для преміум-контенту</p>
+                </div>
+            </div>
+
+            <div class="format-grid">
+                <div class="format-card">
+                    <span class="format-icon">📹</span>
+                    <h3>MP4</h3>
+                    <span class="format-badge">РЕКОМЕНДОВАНО</span>
+                    <p>Універсальний формат з чудовою якістю та сумісністю. Підтримується всіма платформами.</p>
+                    <ul class="specs-list">
+                        <li>Кодек: H.264 (AVC)</li>
+                        <li>Аудіо: AAC, 48kHz</li>
+                        <li>Розмір: Оптимальний</li>
+                        <li>Сумісність: 100%</li>
+                    </ul>
+                </div>
+
+                <div class="format-card">
+                    <span class="format-icon">🎥</span>
+                    <h3>MOV</h3>
+                    <span class="format-badge" style="background: #2196f3;">MacOS/iOS</span>
+                    <p>Ідеальний для екосистеми Apple. Підтримує прозорість та високу якість.</p>
+                    <ul class="specs-list">
+                        <li>Кодек: ProRes, H.264</li>
+                        <li>Підтримка альфа-каналу</li>
+                        <li>Розмір: Великий</li>
+                        <li>Для монтажу: Відмінно</li>
+                    </ul>
+                </div>
+
+                <div class="format-card">
+                    <span class="format-icon">🌐</span>
+                    <h3>WebM</h3>
+                    <span class="format-badge" style="background: #ff9800;">WEB</span>
+                    <p>Веб-оптимізований формат для швидкого завантаження. Ідеально для сайтів.</p>
+                    <ul class="specs-list">
+                        <li>Кодек: VP9</li>
+                        <li>Аудіо: Opus</li>
+                        <li>Розмір: Малий</li>
+                        <li>Швидке завантаження</li>
+                    </ul>
+                </div>
+
+                <div class="format-card">
+                    <span class="format-icon">🎞️</span>
+                    <h3>GIF</h3>
+                    <span class="format-badge" style="background: #9c27b0;">ANIMATION</span>
+                    <p>Короткі анімовані фрагменти для мемів та соціальних мереж.</p>
+                    <ul class="specs-list">
+                        <li>Без звуку</li>
+                        <li>Циклічне відтворення</li>
+                        <li>До 15 секунд</li>
+                        <li>Розмір: Середній</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Export Images -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+                    <img src="https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=500&q=80" alt="Налаштування експорту" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                </div>
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+                    <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=500&q=80" alt="Якість відео" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                </div>
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&q=80" alt="Формати відео" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                </div>
+            </div>
+        </div>
+
+        <div class="export-section">
+            <h2 class="section-title">
+                <span class="title-icon">⚙️</span>
+                Бітрейт та якість
+            </h2>
+            <p>Бітрейт визначає баланс між якістю відео та розміром файлу. Вищий бітрейт = краща якість, але більший файл.</p>
+
+            <div class="bitrate-guide">
+                <div class="bitrate-box">
+                    <h4>📱 Для мобільних пристроїв</h4>
+                    <ul class="specs-list">
+                        <li>720p: 5-8 Mbps</li>
+                        <li>1080p: 8-12 Mbps</li>
+                        <li>Швидка публікація</li>
+                        <li>Менше трафіку</li>
+                    </ul>
+                </div>
+
+                <div class="bitrate-box">
+                    <h4>💻 Для десктопу</h4>
+                    <ul class="specs-list">
+                        <li>1080p: 15-25 Mbps</li>
+                        <li>4K: 35-60 Mbps</li>
+                        <li>Висока якість</li>
+                        <li>Детальність збережена</li>
+                    </ul>
+                </div>
+
+                <div class="bitrate-box">
+                    <h4>🌐 Для YouTube</h4>
+                    <ul class="specs-list">
+                        <li>1080p: 12-20 Mbps</li>
+                        <li>4K: 45-85 Mbps</li>
+                        <li>Рекомендації Google</li>
+                        <li>Оптимальна якість</li>
+                    </ul>
+                </div>
+
+                <div class="bitrate-box">
+                    <h4>📺 Для соцмереж</h4>
+                    <ul class="specs-list">
+                        <li>720p-1080p: 5-10 Mbps</li>
+                        <li>Автостиснення платформи</li>
+                        <li>Баланс якості</li>
+                        <li>Швидке завантаження</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pro-tip">
+                <h3>💡 Золоте правило бітрейту</h3>
+                <p><strong>Завжди експортуйте з вищим бітрейтом, ніж потрібно!</strong> Платформи (YouTube, Instagram, TikTok) завжди стискають ваше відео після завантаження. Якщо ви завантажите 10 Mbps відео, воно може стати 5 Mbps після обробки платформою.</p>
+                <br>
+                <p><strong>Рекомендація:</strong> Для 1080p експортуйте з 20-25 Mbps, навіть якщо кінцева платформа підтримує менше. Це компенсує втрати при стисненні.</p>
+            </div>
+        </div>
+
+        <div class="export-section">
+            <h2 class="section-title">
+                <span class="title-icon">📱</span>
+                Прямий експорт у соцмережі
+            </h2>
+            <p>CapCut дозволяє публікувати відео безпосередньо в соцмережі з оптимальними налаштуваннями для кожної платформи!</p>
+
+            <div class="social-grid">
+                <div class="social-card">
+                    <span class="social-icon">📱</span>
+                    <h3>TikTok</h3>
+                    <p>Вертикальне 9:16</p>
+                    <div class="recommended-settings">
+                        <h4>Рекомендовано:</h4>
+                        <p>1080×1920 px<br>30-60 FPS<br>До 3 хвилин<br>H.264, AAC</p>
+                    </div>
+                </div>
+
+                <div class="social-card">
+                    <span class="social-icon">📷</span>
+                    <h3>Instagram</h3>
+                    <p>Рілси: 9:16, Пости: 1:1</p>
+                    <div class="recommended-settings">
+                        <h4>Рекомендовано:</h4>
+                        <p>1080×1920 (Reels)<br>1080×1080 (Post)<br>30 FPS<br>До 90 сек</p>
+                    </div>
+                </div>
+
+                <div class="social-card">
+                    <span class="social-icon">▶️</span>
+                    <h3>YouTube</h3>
+                    <p>Горизонтальне 16:9</p>
+                    <div class="recommended-settings">
+                        <h4>Рекомендовано:</h4>
+                        <p>1920×1080 або 4K<br>24-60 FPS<br>MP4, H.264<br>Без ліміту часу</p>
+                    </div>
+                </div>
+
+                <div class="social-card">
+                    <span class="social-icon">👥</span>
+                    <h3>Facebook</h3>
+                    <p>Квадрат або 16:9</p>
+                    <div class="recommended-settings">
+                        <h4>Рекомендовано:</h4>
+                        <p>1080×1080 / 1920×1080<br>30 FPS<br>До 240 хвилин<br>H.264</p>
+                    </div>
+                </div>
+
+                <div class="social-card">
+                    <span class="social-icon">🐦</span>
+                    <h3>Twitter/X</h3>
+                    <p>Горизонтальне або квадрат</p>
+                    <div class="recommended-settings">
+                        <h4>Рекомендовано:</h4>
+                        <p>1280×720<br>30 FPS<br>До 2:20<br>Макс 512 МБ</p>
+                    </div>
+                </div>
+
+                <div class="social-card">
+                    <span class="social-icon">📌</span>
+                    <h3>Pinterest</h3>
+                    <p>Вертикальне 2:3</p>
+                    <div class="recommended-settings">
+                        <h4>Рекомендовано:</h4>
+                        <p>1000×1500 px<br>До 15 хвилин<br>MP4<br>Макс 2 ГБ</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pro-tip">
+                <h3>🎯 Лайфхак для багатоплатформенності</h3>
+                <p><strong>Створюйте "майстер-версію" у найвищій якості (4K, ProRes).</strong> Зберігайте її як архів. Потім експортуйте окремі версії для кожної платформи з відповідними налаштуваннями.</p>
+                <br>
+                <p><strong>Приклад процесу:</strong></p>
+                <ul class="specs-list" style="margin-top: 1rem;">
+                    <li>Майстер-версія: 4K, 60 FPS, ProRes (для архіву)</li>
+                    <li>YouTube: 1080p, 60 FPS, 20 Mbps</li>
+                    <li>Instagram Reels: 1080×1920, 30 FPS, 10 Mbps</li>
+                    <li>TikTok: 1080×1920, 30 FPS, 8 Mbps</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="export-section" style="text-align: center;">
+            <h2 class="section-title" style="justify-content: center;">
+                <span class="title-icon">🚀</span>
+                Готові до публікації?
+            </h2>
+            <p style="font-size: 1.2rem; margin: 2rem 0;">Оберіть ваші налаштування, натисніть Export і поділіться своїм творінням зі світом!</p>
+            
+            <div style="background: rgba(0, 0, 0, 0.2); padding: 2rem; border-radius: 20px; margin: 2rem 0;">
+                <h3 style="margin-bottom: 1.5rem; font-size: 1.6rem;">⏱️ Час експорту (приблизно)</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <p style="font-size: 2rem; font-weight: 700; color: #4df7ff;">30 сек</p>
+                        <p>для 1 хв відео (720p)</p>
+                    </div>
+                    <div>
+                        <p style="font-size: 2rem; font-weight: 700; color: #4df7ff;">1-2 хв</p>
+                        <p>для 1 хв відео (1080p)</p>
+                    </div>
+                    <div>
+                        <p style="font-size: 2rem; font-weight: 700; color: #4df7ff;">5-10 хв</p>
+                        <p>для 1 хв відео (4K)</p>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5rem; opacity: 0.8;">*Залежить від потужності вашого пристрою</p>
+            </div>
+
+            <a href="portfolio.html" class="export-button">Подивіться приклади готових робіт →</a>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="mastery-tools.html" class="nav-button">← Профі-фішки</a>
+            <a href="portfolio.html" class="nav-button">Мої роботи →</a>
+        </div>
+    </div>
+</body>
+</html>
