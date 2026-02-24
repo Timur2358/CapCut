@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CapCut Майстер | Головна</title>
     <style>
+        /* ===== ЗАГАЛЬНЕ СКИДАННЯ СТИЛІВ =====
+           Прибирає стандартні відступи та встановлює box-sizing
+           для зручнішого розрахунку розмірів елементів */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* ===== СТИЛІ ТІЛА СТОРІНКИ =====
+           Встановлює основний шрифт, темний фон та білий текст
+           overflow-x: hidden — забороняє горизонтальний скрол */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #2c3e50;
@@ -18,17 +24,21 @@
             overflow-x: hidden;
         }
 
-        /* Navigation */
+        /* ===== НАВІГАЦІЙНА ПАНЕЛЬ =====
+           Закріплена зверху (sticky), напівпрозора з розмиттям фону.
+           Завжди видима при прокрутці сторінки */
         nav {
             background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); /* розмиває фон позаду навбару */
             padding: 1.5rem 2rem;
             position: sticky;
             top: 0;
-            z-index: 1000;
-            animation: slideDown 0.5s ease;
+            z-index: 1000; /* поверх усіх інших елементів */
+            animation: slideDown 0.5s ease; /* анімація появи зверху */
         }
 
+        /* ===== АНІМАЦІЯ: ЗСУВ ВНИЗ =====
+           Використовується для плавної появи навбару при завантаженні */
         @keyframes slideDown {
             from {
                 transform: translateY(-100%);
@@ -40,14 +50,19 @@
             }
         }
 
+        /* ===== СПИСОК ПОСИЛАНЬ У НАВБАРІ =====
+           Розміщує пункти меню у рядок з відступами між ними */
         nav ul {
             list-style: none;
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* переносить на новий рядок на малих екранах */
             justify-content: center;
             gap: 2rem;
         }
 
+        /* ===== ПОСИЛАННЯ НАВБАРУ =====
+           Білий текст без підкреслення.
+           ::after — псевдоелемент для підкреслення при наведенні */
         nav a {
             color: #fff;
             text-decoration: none;
@@ -57,6 +72,8 @@
             padding: 0.5rem 0;
         }
 
+        /* ===== ЕФЕКТ ПІДКРЕСЛЕННЯ ПРИ НАВЕДЕННІ =====
+           Лінія плавно розтягується від центру по ширині посилання */
         nav a::after {
             content: '';
             position: absolute;
@@ -70,14 +87,15 @@
         }
 
         nav a:hover::after {
-            width: 100%;
+            width: 100%; /* при наведенні лінія займає повну ширину */
         }
 
         nav a:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px); /* легкий підйом при наведенні */
         }
 
-        /* Hero Section */
+        /* ===== СЕКЦІЯ ГЕРОЯ (ГОЛОВНИЙ БАНЕР) =====
+           Займає 90% висоти екрану, центрує вміст по вертикалі та горизонталі */
         .hero {
             min-height: 90vh;
             display: flex;
@@ -87,9 +105,11 @@
             text-align: center;
             padding: 2rem;
             position: relative;
-            overflow: hidden;
+            overflow: hidden; /* приховує декоративні кола за межами */
         }
 
+        /* ===== ДЕКОРАТИВНЕ КОЛО (ВЕРХНЄ ПРАВЕ) =====
+           Великий напівпрозорий круг як декоративний елемент фону */
         .hero::before {
             content: '';
             position: absolute;
@@ -99,9 +119,11 @@
             border-radius: 50%;
             top: -100px;
             right: -100px;
-            animation: float 6s ease-in-out infinite;
+            animation: float 6s ease-in-out infinite; /* плавно плаває */
         }
 
+        /* ===== ДЕКОРАТИВНЕ КОЛО (НИЖНЄ ЛІВЕ) =====
+           Менший круг для балансу композиції, рухається у зворотний бік */
         .hero::after {
             content: '';
             position: absolute;
@@ -114,6 +136,8 @@
             animation: float 8s ease-in-out infinite reverse;
         }
 
+        /* ===== АНІМАЦІЯ: ПЛАВАННЯ =====
+           Елемент повільно рухається вгору-вниз як плаваючий об'єкт */
         @keyframes float {
             0%, 100% {
                 transform: translateY(0) scale(1);
@@ -123,6 +147,8 @@
             }
         }
 
+        /* ===== ЛОГОТИП / ЗАГОЛОВОК =====
+           Великий жирний текст із тінню, з'являється знизу при завантаженні */
         .logo {
             font-size: 4rem;
             font-weight: 900;
@@ -131,6 +157,8 @@
             text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
         }
 
+        /* ===== АНІМАЦІЯ: ПОЯВА ЗНИЗУ =====
+           Елемент плавно з'являється, рухаючись знизу вгору */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -142,6 +170,8 @@
             }
         }
 
+        /* ===== СЛОГАН ПІД ЛОГОТИПОМ =====
+           Підзаголовок, з'являється із затримкою 0.2s після логотипу */
         .tagline {
             font-size: 1.5rem;
             margin-bottom: 3rem;
@@ -149,7 +179,9 @@
             animation: fadeInUp 0.8s ease 0.2s backwards;
         }
 
-        /* USP Cards */
+        /* ===== КОНТЕЙНЕР КАРТОК USP (ПЕРЕВАГИ) =====
+           Адаптивна сітка для трьох карток-переваг.
+           auto-fit + minmax — автоматично підлаштовує кількість колонок */
         .usp-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -160,6 +192,9 @@
             z-index: 1;
         }
 
+        /* ===== КАРТКА ПЕРЕВАГИ (USP) =====
+           Напівпрозора картка з розмиттям фону та рамкою.
+           При наведенні піднімається і збільшується */
         .usp-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -170,23 +205,31 @@
             animation: fadeInUp 0.8s ease backwards;
         }
 
+        /* ===== ПОСЛІДОВНА ПОЯВА КАРТОК =====
+           Кожна картка з'являється із збільшеною затримкою для ефекту каскаду */
         .usp-card:nth-child(1) { animation-delay: 0.3s; }
         .usp-card:nth-child(2) { animation-delay: 0.4s; }
         .usp-card:nth-child(3) { animation-delay: 0.5s; }
 
+        /* ===== ЕФЕКТ НАВЕДЕННЯ НА КАРТКУ =====
+           Картка піднімається вгору і з'являється тінь */
         .usp-card:hover {
             transform: translateY(-10px) scale(1.02);
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
+        /* ===== ІКОНКА У КАРТЦІ =====
+           Великий емодзі-символ, постійно підстрибує */
         .usp-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
             display: inline-block;
-            animation: bounce 2s ease-in-out infinite;
+            animation: bounce 2s ease-in-out infinite; /* постійне підстрибування */
         }
 
+        /* ===== АНІМАЦІЯ: ПІДСТРИБУВАННЯ =====
+           Елемент плавно рухається вгору-вниз */
         @keyframes bounce {
             0%, 100% {
                 transform: translateY(0);
@@ -196,10 +239,14 @@
             }
         }
 
+        /* ===== ОБЕРТАННЯ ІКОНКИ ПРИ НАВЕДЕННІ НА КАРТКУ =====
+           При наведенні іконка робить один оберт */
         .usp-card:hover .usp-icon {
             animation: spin 0.6s ease;
         }
 
+        /* ===== АНІМАЦІЯ: ОБЕРТАННЯ =====
+           Повний оберт на 360 градусів із легким збільшенням */
         @keyframes spin {
             from {
                 transform: rotate(0deg) scale(1);
@@ -209,27 +256,33 @@
             }
         }
 
+        /* ===== ЗАГОЛОВОК КАРТКИ ===== */
         .usp-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
 
+        /* ===== ТЕКСТ КАРТКИ ===== */
         .usp-card p {
             opacity: 0.9;
             line-height: 1.6;
         }
 
-        /* CTA Button */
+        /* ===== КОНТЕЙНЕР КНОПКИ CTA (ЗАКЛИК ДО ДІЇ) =====
+           Центрує кнопку, з'являється з затримкою після карток */
         .cta-container {
             margin: 4rem 0;
             animation: fadeInUp 0.8s ease 0.6s backwards;
         }
 
+        /* ===== ГОЛОВНА КНОПКА (CTA) =====
+           Синя кнопка з заокругленими кутами та тінню.
+           ::before — ефект хвилі при натисканні */
         .cta-button {
             background: #3498db;
             color: #fff;
             padding: 1.5rem 4rem;
-            border-radius: 50px;
+            border-radius: 50px; /* таблеткоподібна форма */
             font-size: 1.3rem;
             font-weight: 700;
             text-decoration: none;
@@ -242,6 +295,8 @@
             overflow: hidden;
         }
 
+        /* ===== ЕФЕКТ ХВИЛІ ПРИ НАВЕДЕННІ =====
+           Прихований круг, який розширюється при наведенні */
         .cta-button::before {
             content: '';
             position: absolute;
@@ -256,26 +311,31 @@
         }
 
         .cta-button:hover::before {
-            width: 300px;
+            width: 300px;  /* розширення хвилі при наведенні */
             height: 300px;
         }
 
+        /* ===== ЕФЕКТ НАВЕДЕННЯ НА КНОПКУ ===== */
         .cta-button:hover {
-            transform: scale(1.05);
+            transform: scale(1.05); /* легке збільшення */
             box-shadow: 0 15px 40px rgba(52, 152, 219, 0.6);
         }
 
+        /* ===== ЕФЕКТ НАТИСКАННЯ КНОПКИ =====
+           Кнопка стискається при кліку для реалістичності */
         .cta-button:active {
             transform: scale(0.98);
         }
 
-        /* Features highlight */
+        /* ===== СЕКЦІЯ "ЩО ВИ НАВЧИТЕСЬ" =====
+           Темний блок під секцією героя з переліком навичок */
         .features {
             background: rgba(0, 0, 0, 0.2);
             padding: 3rem 2rem;
             margin-top: 4rem;
         }
 
+        /* ===== ЗАГОЛОВОК СЕКЦІЇ ФУНКЦІЙ ===== */
         .features h2 {
             text-align: center;
             font-size: 2.5rem;
@@ -283,6 +343,8 @@
             animation: fadeInUp 0.8s ease;
         }
 
+        /* ===== СІТКА ІКОНОК-ФУНКЦІЙ =====
+           Адаптивна сітка для малих карток із символами */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -291,6 +353,8 @@
             margin: 0 auto;
         }
 
+        /* ===== ЕЛЕМЕНТ ФУНКЦІЇ =====
+           Маленька картка з іконкою та підписом */
         .feature-item {
             text-align: center;
             padding: 1.5rem;
@@ -299,18 +363,21 @@
             transition: all 0.3s ease;
         }
 
+        /* ===== ЕФЕКТ НАВЕДЕННЯ НА ЕЛЕМЕНТ ФУНКЦІЇ ===== */
         .feature-item:hover {
             background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.05);
+            transform: scale(1.05); /* легке збільшення */
         }
 
+        /* ===== ІКОНКА В ЕЛЕМЕНТІ ФУНКЦІЇ ===== */
         .feature-item span {
             font-size: 2rem;
             display: block;
             margin-bottom: 0.5rem;
         }
 
-        /* Responsive */
+        /* ===== АДАПТИВНІСТЬ ДЛЯ ПЛАНШЕТІВ (до 768px) =====
+           Зменшує розміри шрифтів та перебудовує сітки */
         @media (max-width: 768px) {
             .logo {
                 font-size: 2.5rem;
@@ -329,7 +396,7 @@
             }
 
             .usp-container {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* одна колонка на планшеті */
                 padding: 0 1rem;
             }
 
@@ -343,6 +410,8 @@
             }
         }
 
+        /* ===== АДАПТИВНІСТЬ ДЛЯ МОБІЛЬНИХ (до 480px) =====
+           Максимальне спрощення розмітки для маленьких екранів */
         @media (max-width: 480px) {
             .logo {
                 font-size: 2rem;
@@ -353,18 +422,21 @@
             }
 
             nav ul {
-                flex-direction: column;
+                flex-direction: column; /* вертикальне меню на мобільних */
                 gap: 0.5rem;
                 align-items: center;
             }
 
             .feature-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* одна колонка на мобільних */
             }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== НАВІГАЦІЙНЕ МЕНЮ =====
+         Закріплена зверху панель з посиланнями на всі розділи сайту -->
     <nav>
         <ul>
             <li><a href="index.html">🏠 Головна</a></li>
@@ -377,28 +449,42 @@
         </ul>
     </nav>
 
+    <!-- ===== СЕКЦІЯ ГЕРОЯ (ГОЛОВНИЙ БАНЕР) =====
+         Перший великий блок сторінки з логотипом, слоганом,
+         зображенням та картками переваг -->
     <div class="hero">
+
+        <!-- Назва сайту / логотип -->
         <h1 class="logo">CAPCUT</h1>
+
+        <!-- Короткий слоган під назвою -->
         <p class="tagline">Майстерність відеомонтажу у ваших руках</p>
 
-        <!-- Hero Image -->
+        <!-- ===== ГОЛОВНЕ ЗОБРАЖЕННЯ БАНЕРА =====
+             Велике фото для візуального сприйняття теми сайту -->
         <div style="margin: 2rem 0; max-width: 900px; width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);">
             <img src="https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=900&q=80" alt="Відеомонтаж" style="width: 100%; height: auto; display: block;">
         </div>
 
+        <!-- ===== КАРТКИ ПЕРЕВАГ (USP) =====
+             Три картки, що описують ключові переваги CapCut -->
         <div class="usp-container">
+
+            <!-- Картка 1: безкоштовність -->
             <div class="usp-card">
                 <div class="usp-icon">⚡</div>
                 <h3>Безкоштовно та потужно</h3>
                 <p>Професійні інструменти без абонплати. Все необхідне для створення топових відео вже у програмі.</p>
             </div>
 
+            <!-- Картка 2: простота інтерфейсу -->
             <div class="usp-card">
                 <div class="usp-icon">🎨</div>
                 <h3>Інтуїтивний інтерфейс</h3>
                 <p>Зрозуміло як для новачків, так і для профі. Почніть монтувати вже через 5 хвилин!</p>
             </div>
 
+            <!-- Картка 3: штучний інтелект -->
             <div class="usp-card">
                 <div class="usp-icon">🚀</div>
                 <h3>AI-технології</h3>
@@ -406,16 +492,23 @@
             </div>
         </div>
 
+        <!-- ===== КНОПКА ЗАКЛИКУ ДО ДІЇ (CTA) =====
+             Синя кнопка, що веде до першого розділу навчання -->
         <div class="cta-container">
             <a href="fundamentals.html" class="cta-button">Почати навчання →</a>
         </div>
     </div>
 
+    <!-- ===== СЕКЦІЯ "ЩО ВИ НАВЧИТЕСЬ" =====
+         Блок із зображеннями-прикладами та іконками навичок -->
     <div class="features">
         <h2>Що ви навчитесь робити</h2>
         
-        <!-- Feature Images Grid -->
+        <!-- ===== СІТКА ЗОБРАЖЕНЬ З ОПИСАМИ =====
+             Чотири тематичні фото з підписами — приклади результату навчання -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 3rem 0;">
+
+            <!-- Блок 1: Монтаж -->
             <div style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
                 <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&q=80" alt="Відеомонтаж" style="width: 100%; height: 250px; object-fit: cover; display: block;">
                 <div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.1);">
@@ -424,6 +517,7 @@
                 </div>
             </div>
             
+            <!-- Блок 2: Ефекти -->
             <div style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
                 <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=600&q=80" alt="Ефекти" style="width: 100%; height: 250px; object-fit: cover; display: block;">
                 <div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.1);">
@@ -432,6 +526,7 @@
                 </div>
             </div>
             
+            <!-- Блок 3: Звук -->
             <div style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
                 <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&q=80" alt="Звук" style="width: 100%; height: 250px; object-fit: cover; display: block;">
                 <div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.1);">
@@ -440,6 +535,7 @@
                 </div>
             </div>
             
+            <!-- Блок 4: Публікація -->
             <div style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
                 <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=600&q=80" alt="Експорт" style="width: 100%; height: 250px; object-fit: cover; display: block;">
                 <div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.1);">
@@ -449,6 +545,8 @@
             </div>
         </div>
         
+        <!-- ===== СІТКА ІКОНОК НАВИЧОК =====
+             Шість маленьких карток з емодзі та підписом — короткий перелік тем -->
         <div class="feature-grid">
             <div class="feature-item">
                 <span>✂️</span>
@@ -477,17 +575,20 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- ===== ПІДВАЛ (FOOTER) =====
+         Нижня частина сторінки з інформацією про сайт,
+         швидкими посиланнями та контактними даними -->
     <footer style="background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); padding: 3rem 2rem 2rem; margin-top: 4rem; border-top: 2px solid rgba(255, 255, 255, 0.1);">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
-                <!-- About Section -->
+
+                <!-- Блок "Про сайт" -->
                 <div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #3498db;">CapCut Майстер</h3>
                     <p style="opacity: 0.8; line-height: 1.6;">Навчальний сайт, присвячений майстерності відеомонтажу в CapCut. Тут ви знайдете все необхідне для створення професійних відео.</p>
                 </div>
                 
-                <!-- Quick Links -->
+                <!-- Блок "Швидкі посилання" — дублює навігацію для зручності -->
                 <div>
                     <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">Швидкі посилання</h3>
                     <ul style="list-style: none;">
@@ -498,7 +599,7 @@
                     </ul>
                 </div>
                 
-                <!-- Contact Info -->
+                <!-- Блок "Контакти" — email, telegram, instagram -->
                 <div>
                     <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">Контакти</h3>
                     <p style="opacity: 0.8; line-height: 1.8;">
@@ -509,7 +610,8 @@
                 </div>
             </div>
             
-            <!-- Copyright -->
+            <!-- ===== КОПІРАЙТ =====
+                 Рядок авторських прав у самому низу сторінки -->
             <div style="text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); opacity: 0.7;">
                 <p>© 2026 CapCut Майстер. Підготував Скаковський Тимур.</p>
                 <p style="margin-top: 0.5rem; font-size: 0.9rem;">Створено з ❤️ для любителів відеомонтажу</p>
@@ -517,6 +619,8 @@
         </div>
     </footer>
 
+    <!-- ===== ДОДАТКОВІ СТИЛІ ДЛЯ ПІДВАЛУ =====
+         Підсвічує посилання синім кольором при наведенні -->
     <style>
         footer a:hover {
             opacity: 1 !important;
